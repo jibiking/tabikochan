@@ -3,6 +3,11 @@ class MapsController < ApplicationController
 
   end
 
+  def test
+    
+  end
+  
+
   def calculate_route
     @tabiko = 'tabitabitabi'
     pp @tabiko
