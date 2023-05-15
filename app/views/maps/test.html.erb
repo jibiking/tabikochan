@@ -15,7 +15,7 @@
       // 地図を生成して表示
       var map = new google.maps.Map(document.getElementById("gmap"), {
         zoom: 13,
-        center: new google.maps.LatLng(40.750127,-73.981084),  //Madison Av/E 38 St
+        center: new google.maps.LatLng(36.226389, 140.102778), // 筑波山の座標に変更
         mapTypeId: "roadmap"
       });
 
@@ -28,10 +28,10 @@
       //directionsRenderer と地図を紐付け
       directionsRenderer.setMap(map);
 
-      //リクエストの出発点の位置（Empire State Building 出発地点の緯度経度）
-      var start = new google.maps.LatLng(40.748541, -73.985758);
-      //リクエストの終着点の位置（Grand Central Station 到着地点の緯度経度）
-      var end = new google.maps.LatLng( 40.752741,-73.9772);
+      //リクエストの出発点の位置（筑波山山頂 出発地点の緯度経度）
+      var start = new google.maps.LatLng(36.226389, 140.102778);
+      //リクエストの終着点の位置（つくばイオン 到着地点の緯度経度）
+      var end = new google.maps.LatLng(35.944742, 140.091956);
 
       // ルートを取得するリクエスト
       var request = {
