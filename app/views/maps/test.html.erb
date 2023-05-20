@@ -1,7 +1,7 @@
 <style>
 #gmap {
-  height: 400px;
-  width: 600px;
+  height: 800px;
+  width: 1000px;
 }
 </style>
 
@@ -15,7 +15,7 @@
       // 地図を生成して表示
       var map = new google.maps.Map(document.getElementById("gmap"), {
         zoom: 13,
-        center: new google.maps.LatLng(36.226389, 140.102778), // 筑波山の座標に変更
+        center: '筑波山山頂', // 筑波山の座標に変更
         mapTypeId: "roadmap"
       });
 
@@ -28,16 +28,21 @@
       //directionsRenderer と地図を紐付け
       directionsRenderer.setMap(map);
 
-      //リクエストの出発点の位置（筑波山山頂 出発地点の緯度経度）
-      var start = new google.maps.LatLng(36.226389, 140.102778);
-      //リクエストの終着点の位置（つくばイオン 到着地点の緯度経度）
-      var end = new google.maps.LatLng(35.944742, 140.091956);
+      // 経由地の配列を生成
+      var wayPoints = new Array();
+      wayPoints.push({location: 'つくば駅'});
+      wayPoints.push({location: '松代公園'});
+      wayPoints.push({location: 'つくば牡丹園'});
+
 
       // ルートを取得するリクエスト
       var request = {
-        origin: start,      // 出発地点の緯度経度
-        destination: end,   // 到着地点の緯度経度
-        travelMode: 'WALKING' //トラベルモード（歩き）
+        origin: '筑波山山頂',      // 出発地点の緯度経度
+        destination: 'イオンモールつくば',   // 到着地点の緯度経度
+        avoidHighways: true, // 高速は利用しない
+        travelMode: google.maps.TravelMode.DRIVING, // 車モード
+    		optimizeWaypoints: true, // 最適化を有効
+		    waypoints: wayPoints // 経由地
       };
 
       //DirectionsService のオブジェクトのメソッド route() にリクエストを渡し、
@@ -46,6 +51,25 @@
         //ステータスがOKの場合、
         if (status === 'OK') {
           directionsRenderer.setDirections(result); //取得したルート（結果：result）をセット
+          var legs = result.routes[0].legs;
+
+          // 総距離と総時間の合計する
+          var dis = 0;
+          var sec = 0;
+          legs.forEach(function(val, i) {
+            sec += val.duration.value;
+            dis += val.distance.value;
+          });
+
+          // 距離をキロメートルに変換
+          var distanceInKm = (dis / 1000).toFixed(1);
+
+          // 時間を分と時間に変換
+          var minutes = sec / 60;
+          var hours = Math.floor(minutes / 60);
+          minutes = Math.round(minutes % 60);
+
+          console.log("距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分");
         }else{
           alert("取得できませんでした：" + status);
         }
