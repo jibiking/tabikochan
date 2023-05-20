@@ -56,10 +56,16 @@
           // 総距離と総時間の合計する
           var dis = 0;
           var sec = 0;
+          var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
+
           legs.forEach(function(val, i) {
             sec += val.duration.value;
             dis += val.distance.value;
-          });
+
+            var routeLetter = String.fromCharCode(count_route) + ' - ' + String.fromCharCode(count_route + 1);
+            console.log("ルート番号：" + routeLetter + ", 距離：" + val.duration.value + "km, 時間：" + val.distance.value + "時間");
+            count_route++; // 文字コードを1つ増やす
+            });
 
           // 距離をキロメートルに変換
           var distanceInKm = (dis / 1000).toFixed(1);
