@@ -11,4 +11,4 @@ down: ## 停止
 	@docker-compose down
 
 runner: ## docker内に入る
-	@docker exec -it tabiko-api-web-1 bash
+	@docker exec -it tabiko-web-1 bash

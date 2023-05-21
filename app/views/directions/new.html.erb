@@ -1,1 +1,20 @@
-<h1><%= link_to '結果を表示', '/result' %></h1>
+<%= form_with(url: create_direction_path, method: :post) do |form| %>
+  <div>
+    <%= form.label :start_location, "スタート地点:" %>
+    <%= form.text_field :start_location, id: "start_location" %>
+  </div>
+
+  <div>
+    <%= form.label :end_location, "ゴール地点:" %>
+    <%= form.text_field :end_location, id: "end_location" %>
+  </div>
+
+  <div>
+    <%= form.label :waypoints, "経由地:" %>
+    <%= form.text_field :waypoint1, id: "waypoint1" %>
+    <%= form.text_field :waypoint2, id: "waypoint2" %>
+    <%= form.text_field :waypoint3, id: "waypoint3" %>
+  </div>
+
+  <%= form.submit "結果を表示" %>
+<% end %>
