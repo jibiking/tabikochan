@@ -58,23 +58,15 @@
           var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
 
           // 経由地間の距離・時間を表示
-          legs.forEach(function(val, i) {
+          legs.forEach(function(val) {
             sec += val.duration.value;
             dis += val.distance.value;
-
-            // 距離をキロメートルに変換
-            var distanceInKm = (val.distance.value / 1000).toFixed(1);
-
-            // 時間を分と時間に変換
-            var minutes = val.duration.value / 60;
-            var hours = Math.floor(minutes / 60);
-            minutes = Math.round(minutes % 60);
 
             // ルートを整形
             var routeLetter = String.fromCharCode(count_route) + '-' + String.fromCharCode(count_route + 1);
             count_route++; // 文字コードを1つ増やす
 
-            console.log("ルート番号：" + routeLetter + ", 距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分");
+            console.log(routeLetter + ", " + val.distance.text + ", " + val.duration.text);
             });
 
           var distanceInKm = (dis / 1000).toFixed(1);
