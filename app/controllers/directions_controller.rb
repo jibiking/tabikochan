@@ -1,4 +1,4 @@
 class DirectionsController < ApplicationController
-
-  def show; end
+  def new; end
+  def result; end
 end

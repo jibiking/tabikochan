@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  get '/', to: 'directions#show'
+  get '/', to: 'directions#new'
+  get '/result', to: 'directions#result'
 end
