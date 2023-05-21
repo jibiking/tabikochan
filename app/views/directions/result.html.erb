@@ -10,6 +10,20 @@
 <body>
   <div id="gmap"></div><!-- 地図を表示する領域 -->
 
+  <h1>Result</h1>
+  <p>Start Location:<br>
+    <%= @start_location %>
+  </p>
+  <p>End Location:<br>
+    <%= @end_location %>
+  </p>
+  <p>Waypoint:<br>
+    <% @waypoint.each do |waypoint| %>
+      <%= waypoint %><br>
+    <% end %>
+  </p>
+
+
   <script>
     function initMap() {
       // 地図を生成して表示
