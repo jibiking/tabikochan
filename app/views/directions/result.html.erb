@@ -29,7 +29,7 @@
       // 地図を生成して表示
       var map = new google.maps.Map(document.getElementById("gmap"), {
         zoom: 13,
-        center: '筑波山山頂', // マップ中央をスタート地点に設定
+        center: "<%= @start_location %>", // マップ中央をスタート地点に設定
         mapTypeId: "roadmap"
       });
 
@@ -44,15 +44,15 @@
 
       // 経由地の配列を生成（最大8個）
       var wayPoints = new Array();
-      wayPoints.push({location: 'つくば駅'});
-      wayPoints.push({location: '松代公園'});
-      wayPoints.push({location: 'つくば牡丹園'});
+      wayPoints.push({location: "<%= @waypoint[0] %>"});
+      wayPoints.push({location: "<%= @waypoint[1] %>"});
+      wayPoints.push({location: "<%= @waypoint[2] %>"});
 
 
       // ルートを取得するリクエスト
       var request = {
-        origin: '筑波山山頂',      // スタート地点
-        destination: 'イオンモールつくば',   // ゴール地点
+        origin: "<%= @start_location %>",      // スタート地点
+        destination: "<%= @end_location %>",   // ゴール地点
         avoidHighways: true, // 高速は利用しない
         travelMode: google.maps.TravelMode.DRIVING, // 車モード
     		optimizeWaypoints: true, // 最適化を有効
