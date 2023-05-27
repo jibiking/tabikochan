@@ -22,7 +22,8 @@
       <%= waypoint %><br>
     <% end %>
   </p>
-  <div id="output"></div>
+  <div id="waypoint_output"></div>
+  <div id="result_output"></div>
 
 
   <script>
@@ -71,6 +72,7 @@
           var dis = 0;
           var sec = 0;
           var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
+          var waypoint = 0;
 
           // 経由地間の距離・時間を表示
           legs.forEach(function(val) {
@@ -82,6 +84,10 @@
             count_route++; // 文字コードを1つ増やす
 
             console.log(routeLetter + ", " + val.distance.text + ", " + val.duration.text);
+
+            waypoint += routeLetter + ", " + val.distance.text + ", " + val.duration.text + "<br>";
+            const waypointElement = document.getElementById("waypoint_output");
+            waypointElement.innerHTML = waypoint;
             });
 
           var distanceInKm = (dis / 1000).toFixed(1);
@@ -91,7 +97,7 @@
           minutes = Math.round(minutes % 60);
 
           result = "距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分";
-          const outputElement = document.getElementById("output");
+          const outputElement = document.getElementById("result_output");
           outputElement.textContent = result;
         }else{
           alert("取得できませんでした：" + status);
