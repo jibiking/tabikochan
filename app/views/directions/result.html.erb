@@ -22,6 +22,7 @@
       <%= waypoint %><br>
     <% end %>
   </p>
+  <div id="output"></div>
 
 
   <script>
@@ -89,7 +90,9 @@
           var hours = Math.floor(minutes / 60);
           minutes = Math.round(minutes % 60);
 
-          console.log("距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分");
+          result = "距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分";
+          const outputElement = document.getElementById("output");
+          outputElement.textContent = result;
         }else{
           alert("取得できませんでした：" + status);
         }
