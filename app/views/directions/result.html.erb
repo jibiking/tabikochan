@@ -46,9 +46,12 @@
 
       // 経由地の配列を生成（最大8個）
       var wayPoints = new Array();
-      wayPoints.push({location: "<%= @waypoint[0] %>"});
-      wayPoints.push({location: "<%= @waypoint[1] %>"});
-      wayPoints.push({location: "<%= @waypoint[2] %>"});
+      var waypoint_string = '<%= raw @waypoint.to_json %>'
+      var waypoint_array = JSON.parse(waypoint_string);
+
+      waypoint_array.forEach(function(waypoint_element) {
+        wayPoints.push({location: waypoint_element});
+      });
 
 
       // ルートを取得するリクエスト
@@ -75,8 +78,6 @@
           var waypoint_count = 0;
 
           // ルートの配列定義
-          var waypoint_string = '<%= raw @waypoint.to_json %>'
-          var waypoint_array = JSON.parse(waypoint_string);
           waypoint_array.unshift("<%= @start_location %>");
           waypoint_array.push("<%= @end_location %>");
 
