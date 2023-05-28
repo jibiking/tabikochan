@@ -71,34 +71,30 @@
 
           var dis = 0;
           var sec = 0;
-          var waypoint = '';
+          var waypoints = '';
           var waypoint_count = 0;
 
-          var waypoint_test = '<%= raw @waypoint.to_json %>'
-          var waypoint_array = JSON.parse(waypoint_test);
+          // ルートの配列定義
+          var waypoint_string = '<%= raw @waypoint.to_json %>'
+          var waypoint_array = JSON.parse(waypoint_string);
           waypoint_array.unshift("<%= @start_location %>");
           waypoint_array.push("<%= @end_location %>");
-          console.log(waypoint_array);
 
           // 経由地間の距離・時間を表示
           legs.forEach(function(val) {
             sec += val.duration.value;
             dis += val.distance.value;
 
-
             var routes = waypoint_array[waypoint_count] + ' 〜 ' + waypoint_array[waypoint_count + 1];
-
-
-
-            waypoint += routes + ", " + val.distance.text + ", " + val.duration.text + "<br>";
-            const waypointElement = document.getElementById("waypoint_output");
-            waypointElement.innerHTML = waypoint;
-
             waypoint_count++;
+
+            waypoints += routes + ", " + val.distance.text + ", " + val.duration.text + "<br>";
+            const waypointElement = document.getElementById("waypoint_output");
+            waypointElement.innerHTML = waypoints;
             });
 
+          // 時間・距離計算
           var distanceInKm = (dis / 1000).toFixed(1);
-
           var minutes = sec / 60;
           var hours = Math.floor(minutes / 60);
           minutes = Math.round(minutes % 60);
