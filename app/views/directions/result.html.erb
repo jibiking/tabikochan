@@ -71,23 +71,30 @@
 
           var dis = 0;
           var sec = 0;
-          var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
-          var waypoint = 0;
+          var waypoint = '';
+          var waypoint_count = 0;
+
+          var waypoint_test = '<%= raw @waypoint.to_json %>'
+          var waypoint_array = JSON.parse(waypoint_test);
+          waypoint_array.unshift("<%= @start_location %>");
+          waypoint_array.push("<%= @end_location %>");
+          console.log(waypoint_array);
 
           // 経由地間の距離・時間を表示
           legs.forEach(function(val) {
             sec += val.duration.value;
             dis += val.distance.value;
 
-            // ルートを整形
-            var routeLetter = String.fromCharCode(count_route) + '-' + String.fromCharCode(count_route + 1);
-            count_route++; // 文字コードを1つ増やす
 
-            console.log(routeLetter + ", " + val.distance.text + ", " + val.duration.text);
+            var routes = waypoint_array[waypoint_count] + ' 〜 ' + waypoint_array[waypoint_count + 1];
 
-            waypoint += routeLetter + ", " + val.distance.text + ", " + val.duration.text + "<br>";
+
+
+            waypoint += routes + ", " + val.distance.text + ", " + val.duration.text + "<br>";
             const waypointElement = document.getElementById("waypoint_output");
             waypointElement.innerHTML = waypoint;
+
+            waypoint_count++;
             });
 
           var distanceInKm = (dis / 1000).toFixed(1);
