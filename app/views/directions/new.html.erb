@@ -1,20 +1,102 @@
-<%= form_with(url: create_direction_path, method: :post) do |form| %>
-  <div>
-    <%= form.label :start_location, "スタート地点:" %>
-    <%= form.text_field :start_location, id: "start_location" %>
-  </div>
+<style>
+  /* 全体のスタイル */
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url("<%= asset_path('tabikochan.png') %>") no-repeat center/cover;
+    font-family: Arial, sans-serif;
+  }
 
-  <div>
-    <%= form.label :end_location, "ゴール地点:" %>
-    <%= form.text_field :end_location, id: "end_location" %>
-  </div>
+  /* テキストフィールド */
+  .cp_iptxt {
+    position: relative;
+    width: 80%;
+    margin: 40px 3%;
+  }
+  .cp_iptxt input[type='text'] {
+    font: 15px/24px sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+    letter-spacing: 1px;
+    padding-left: 4em;
+  }
+  .cp_iptxt input[type='text']:focus {
+    outline: none;
+  }
+  .ef {
+    padding: 4px 0;
+    border: 0;
+    border-bottom: 1px solid #1b2538;
+    background-color: transparent;
+  }
+  .ef ~ .focus_line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    transition: 0.4s;
+    background-color: #da3c41;
+  }
+  .ef:focus ~ .focus_line,
+  .cp_iptxt.ef ~ .focus_line {
+    width: 100%;
+    transition: 0.4s;
+  }
+  .ef ~ label {
+    position: absolute;
+    z-index: -1;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    transition: 0.3s;
+    letter-spacing: 0.5px;
+    color: #aaaaaa;
+  }
+  .ef:focus ~ label, .cp_iptxt.ef ~ label {
+    font-size: 12px;
+    top: -16px;
+    transition: 0.3s;
+    color: #da3c41;
+  }
+  /* テキストフィールド↑ */
+</style>
+</head>
 
-  <div>
-    <%= form.label :waypoints, "経由地:" %>
-    <%= form.text_field :waypoint1, id: "waypoint1" %>
-    <%= form.text_field :waypoint2, id: "waypoint2" %>
-    <%= form.text_field :waypoint3, id: "waypoint3" %>
-  </div>
+<body>
+  <%= form_with(url: create_direction_path, method: :post) do |form| %>
+    <div class="cp_iptxt">
+      <%= form.text_field :start_location, id: "start_location", class: "ef", type: "text", placeholder: "" %>
+      <label>スタート地点</label>
+      <span class="focus_line"></span>
+    </div>
 
-  <%= form.submit "結果を表示" %>
-<% end %>
+    <div class="cp_iptxt">
+      <%= form.text_field :end_location, id: "end_location", class: "ef", type: "text", placeholder: "" %>
+      <label>ゴール地点</label>
+      <span class="focus_line"></span>
+    </div>
+
+    <div class="cp_iptxt">
+      <%= form.text_field :waypoint1, id: "waypoint1", class: "ef", type: "text", placeholder: "" %>
+      <label>経由地</label>
+      <span class="focus_line"></span>
+    </div>
+    <div class="cp_iptxt">
+      <%= form.text_field :waypoint2, id: "waypoint2", class: "ef", type: "text", placeholder: "" %>
+      <label>経由地</label>
+      <span class="focus_line"></span>
+    </div>
+    <div class="cp_iptxt">
+      <%= form.text_field :waypoint3, id: "waypoint3", class: "ef", type: "text", placeholder: "" %>
+      <label>経由地</label>
+      <span class="focus_line"></span>
+    </div>
+
+    <%= form.submit "結果を表示" %>
+  <% end %>
+
+</body>
