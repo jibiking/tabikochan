@@ -4,16 +4,21 @@
  }
 
   /* レイアウト */
+  .title_wrapper {
+    position: absolute;
+    top: 170px;
+    left: 140px;
+  }
   .form_wrapper {
-    margin-left: 780px;
-    /* margin-bottom: 180px; */
+    top: 130px;
+    position: absolute;
+    left: 1015px;
   }
 
   .form_body {
     width: 180%;
   }
 
-  /* 全体のスタイル */
   body {
     display: flex;
     flex-direction: column;
@@ -22,6 +27,12 @@
     height: 100vh;
     background: url("<%= asset_path('tabikochan.png') %>") no-repeat center/cover;
     font-family: Arial, sans-serif;
+  }
+
+  /* タイトル */
+  .title_img {
+    width: 600px;
+    height: 440px;
   }
 
   /* テキストフィールド */
@@ -147,6 +158,11 @@
 </head>
 
 <body>
+  <div class="title_wrapper">
+    <h1 class="title">
+      <img src="<%= asset_path('title.png') %>" alt="Tabikochan" class="title_img">
+    </h1>
+  </div>
   <div class="form_wrapper">
     <%= form_with(url: create_direction_path, method: :post, html: { class: "form_body" }) do |form| %>
       <div class="cp_iptxt">
@@ -180,6 +196,4 @@
       <%= button_tag "結果を表示", type: "submit", class: "cp_button01" %>
     <% end %>
   </div>
-
-
 </body>
