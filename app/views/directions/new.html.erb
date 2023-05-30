@@ -7,8 +7,15 @@
   /* レイアウト */
   .title_wrapper {
     position: absolute;
-    top: 170px;
+    top: 115px;
     left: 140px;
+  }
+  .desc_wrapper {
+    position: absolute;
+    top: 575px;
+    left: 170px;
+    width: 580px;
+    text-shadow: 0 0 0.12em rgba(0,0,0,1);
   }
   .form_wrapper {
     top: 130px;
@@ -37,8 +44,8 @@
 
   /* タイトル */
   .title_img {
-    width: 600px;
-    height: 440px;
+    width: 650px;
+    height: 490px;
   }
 
   /* テキストフィールド */
@@ -173,6 +180,10 @@
     <h1 class="title">
       <img src="<%= asset_path('title.png') %>" alt="Tabikochan" class="title_img">
     </h1>
+  </div>
+  <div class="desc_wrapper">
+    Tabikochanはルート最適化アプリです。<br>
+    与えられた地点をもとに最適なルートを提案し、あなたの旅をサポートします。
   </div>
   <div class="form_wrapper">
     <%= form_with(url: create_direction_path, method: :post, html: { class: "form_body" }) do |form| %>
