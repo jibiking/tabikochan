@@ -1,6 +1,7 @@
 <style>
  * {
-  color: #fff
+  color: #fff;
+  font-family: 'Kiwi Maru', serif;
  }
 
   /* レイアウト */
@@ -17,6 +18,11 @@
 
   .form_body {
     width: 180%;
+  }
+
+  .button_wrapper {
+    text-align: center;
+    margin-top: 80px;
   }
 
   body {
@@ -104,6 +110,7 @@
 	-webkit-transform: translate(0.5em -0.4em);
 	        transform: translate(0.5em -0.4em);
 	color: #FFED00;
+  font-size: 16px;
 	border: 1px solid #FFF570;
 	border-radius: 0;
 	background: transparent;
@@ -155,6 +162,10 @@
   }
   /* ボタン↑ */
 </style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -193,7 +204,9 @@
         <span class="focus_line"></span>
       </div>
 
-      <%= button_tag "結果を表示", type: "submit", class: "cp_button01" %>
+      <div class="button_wrapper">
+        <%= button_tag "検索", type: "submit", class: "cp_button01" %>
+      </div>
     <% end %>
   </div>
 </body>
