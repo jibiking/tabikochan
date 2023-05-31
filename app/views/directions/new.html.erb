@@ -213,29 +213,29 @@
   <div class="form_wrapper">
     <%= form_with(url: create_direction_path, method: :post, html: { class: "form_body" }) do |form| %>
       <div class="cp_iptxt">
-        <%= form.text_field :start_location, id: "start_location", class: "ef", type: "text", placeholder: "" %>
+        <%= form.text_field :start_location, id: "start_location", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
         <label>出発地</label>
         <span class="focus_line"></span>
       </div>
 
       <div class="cp_iptxt">
-        <%= form.text_field :end_location, id: "end_location", class: "ef", type: "text", placeholder: "" %>
+        <%= form.text_field :end_location, id: "end_location", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
         <label>目的地</label>
         <span class="focus_line"></span>
       </div>
 
       <div class="cp_iptxt">
-        <%= form.text_field :waypoint1, id: "waypoint1", class: "ef", type: "text", placeholder: "" %>
+        <%= form.text_field :waypoint1, id: "waypoint1", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
         <label>経由地</label>
         <span class="focus_line"></span>
       </div>
       <div class="cp_iptxt">
-        <%= form.text_field :waypoint2, id: "waypoint2", class: "ef", type: "text", placeholder: "" %>
+        <%= form.text_field :waypoint2, id: "waypoint2", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
         <label>経由地</label>
         <span class="focus_line"></span>
       </div>
       <div class="cp_iptxt">
-        <%= form.text_field :waypoint3, id: "waypoint3", class: "ef", type: "text", placeholder: "" %>
+        <%= form.text_field :waypoint3, id: "waypoint3", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
         <label>経由地</label>
         <span class="focus_line"></span>
       </div>
