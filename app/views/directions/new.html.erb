@@ -2,13 +2,16 @@
  * {
   color: #fff;
   font-family: 'Kiwi Maru', serif;
- }
+  }
 
   /* レイアウト */
   .title_wrapper {
     position: absolute;
-    top: 115px;
-    left: 140px;
+    top: 110px;
+    left: 170px;
+  }
+  .title {
+    margin-bottom: 30px;
   }
   .desc_wrapper {
     position: absolute;
@@ -52,9 +55,14 @@
   }
 
   /* タイトル */
-  .title_img {
-    width: 650px;
-    height: 490px;
+  .title {
+    font-size: 100px;
+    text-shadow: 0 0 0.06em rgba(0,0,0,1);
+    letter-spacing: 6px;
+  }
+  .title_desc {
+    font-size: 30px;
+    text-shadow: 0 0 0.12em rgba(0,0,0,1);
   }
 
   /* テキストフィールド */
@@ -188,8 +196,9 @@
   <canvas id="canvas"></canvas>
   <div class="title_wrapper">
     <h1 class="title">
-      <img src="<%= asset_path('title.png') %>" alt="Tabikochan" class="title_img">
+      Tabikochan
     </h1>
+    <p class="title_desc">あなたの旅を、最適に。</p>
   </div>
   <div class="desc_wrapper">
     Tabikochanはルート最適化アプリです。<br>
