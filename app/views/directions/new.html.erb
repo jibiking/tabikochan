@@ -1,6 +1,6 @@
 <style>
  * {
-  color: #fff;
+  color: #FF9494;
   font-family: 'Kiwi Maru', serif;
   }
 
@@ -18,7 +18,6 @@
     top: 575px;
     left: 170px;
     width: 580px;
-    text-shadow: 0 0 0.12em rgba(0,0,0,1);
   }
   .form_wrapper {
     top: 130px;
@@ -51,18 +50,16 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: #FDF8B5;
+    background: #FFF5E4;
   }
 
   /* タイトル */
   .title {
     font-size: 100px;
-    text-shadow: 0 0 0.06em rgba(0,0,0,1);
     letter-spacing: 6px;
   }
   .title_desc {
     font-size: 30px;
-    text-shadow: 0 0 0.12em rgba(0,0,0,1);
   }
 
   /* テキストフィールド */
@@ -93,7 +90,7 @@
     width: 0;
     height: 2px;
     transition: 0.4s;
-    background-color: #FFF570;
+    background-color: #FF9494;
   }
   .ef:focus ~ .focus_line,
   .cp_iptxt.ef ~ .focus_line {
@@ -114,7 +111,7 @@
     font-size: 12px;
     top: -16px;
     transition: 0.3s;
-    color: #FFF570;
+    color: #FF9494;
   }
   /* テキストフィールド↑ */
 
@@ -133,9 +130,9 @@
 	transition: transform 0.2s, color 0.2s;
 	-webkit-transform: translate(0.5em -0.4em);
 	        transform: translate(0.5em -0.4em);
-	color: #FFED00;
+	color: #fff;
   font-size: 16px;
-	border: 1px solid #FFF570;
+	border: 1px solid #FF9494;
 	border-radius: 0;
 	background: transparent;
   }
@@ -151,12 +148,12 @@
     transition: transform 0.2s, background-color 0.2s;
     -webkit-transform: translate(0.6em, -0.3em);
             transform: translate(0.6em, -0.3em);
-    background-color: rgba(255,245,112,0.5);
+    background-color: rgba(255,148,148,0.5);
   }
   .cp_button01:hover {
     -webkit-transform: translate(0.2em, -0.1em);
             transform: translate(0.2em, -0.1em);
-    color: #ffffff;
+    color: #FF9494;
 
   }
   .cp_button01:hover:before {
@@ -172,17 +169,17 @@
     transition-duration: 0.1s;
     -webkit-transform: translate(0, 0);
             transform: translate(0, 0);
-    background-color: rgba(255,245,112,0.5);
+    background-color: rgba(255, 148, 148,0.5);
   }
   .cp_button01:focus {
-    color: #26c6da;
-    border: 1px solid #26c6da;
+    color: #FF9494;
+    border: 1px solid #FF9494;
   }
   .cp_button01:focus:hover {
     color: #ffffff;
   }
   .cp_button01:focus:before {
-    background-color: rgba(255,245,112,0.5);
+    background-color: rgba(255, 148, 148,0.5);
   }
   /* ボタン↑ */
 </style>
@@ -269,7 +266,7 @@
               ctx.beginPath();
               ctx.arc(this.x + + Math.sin((50 + x + (t / 10)) / 100) * 3, this.y + + Math.sin((45 + x + (t / 10)) / 100) * 4, this.r, 0, 2 * Math.PI, false);
               ctx.lineWidth = this.w;
-              ctx.strokeStyle = '#03BD53';
+              ctx.strokeStyle = '#FFD1D1';
               ctx.stroke();
           }
       }
@@ -307,8 +304,8 @@
               ctx.translate(this.x + Math.sin((x + (t / 10)) / 100) * 5, this.y + Math.sin((10 + x + (t / 10)) / 100) * 2);
               ctx.rotate(this.r * Math.PI / 180);
               
-              line(-1, -1, 1, 1, '#03BD53');
-              line(1, -1, -1, 1, '#03BD53');
+              line(-1, -1, 1, 1, '#FFD1D1');
+              line(1, -1, -1, 1, '#FFD1D1');
               
               ctx.restore();
           }
