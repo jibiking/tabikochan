@@ -1,30 +1,46 @@
 <style>
-#gmap {
-  height: 800px;
-  width: 1000px;
-}
+  * {
+    color: #fff;
+    font-family: 'Kiwi Maru', serif;
+  }
+
+  /* レイアウト */
+  #gmap {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 865px;
+    width: 940px;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url("<%= asset_path('tabikochan.png') %>") no-repeat center/cover;
+    overflow: hidden;
+  }
+  .result_wrapper {
+    position: absolute;
+    top: 130px;
+    left: 1015px;
+  }
+
 </style>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div id="gmap"></div><!-- 地図を表示する領域 -->
-
-  <h1>Result</h1>
-  <p>Start Location:<br>
-    <%= @start_location %>
-  </p>
-  <p>End Location:<br>
-    <%= @end_location %>
-  </p>
-  <p>Waypoint:<br>
-    <% @waypoint.each do |waypoint| %>
-      <%= waypoint %><br>
-    <% end %>
-  </p>
-  <div id="waypoint_output"></div>
-  <div id="result_output"></div>
-
+  <div class="result_wrapper">
+    <h2>Result</h2>
+    <div id="waypoint_output"></div>
+    <div id="result_output"></div>
+  </div>
 
   <script>
     function initMap() {
@@ -76,6 +92,7 @@
           var sec = 0;
           var waypoints = '';
           var waypoint_count = 0;
+          var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
 
           // ルートの配列定義
           waypoint_array.unshift("<%= @start_location %>");
@@ -85,8 +102,10 @@
           legs.forEach(function(val) {
             sec += val.duration.value;
             dis += val.distance.value;
+            var routeLetter = String.fromCharCode(count_route); // 文字コードを文字列に変換
+            var routeLetter2 = String.fromCharCode(++count_route);
 
-            var routes = waypoint_array[waypoint_count] + ' 〜 ' + waypoint_array[waypoint_count + 1];
+            var routes = routeLetter + ': ' + waypoint_array[waypoint_count] + ' 〜 ' + routeLetter2 + ': ' + waypoint_array[waypoint_count + 1];
             waypoint_count++;
 
             waypoints += routes + ", " + val.distance.text + ", " + val.duration.text + "<br>";
