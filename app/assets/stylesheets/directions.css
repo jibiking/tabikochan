@@ -45,6 +45,7 @@ footer {
   border: 1px solid #FF9494;
   border-radius: 0;
   background: transparent;
+  text-decoration: none;
 }
 .cp_button01:before {
   position: absolute;
@@ -226,7 +227,7 @@ footer {
 
 .result_wrapper {
   position: absolute;
-  top: 130px;
+  top: 50px;
   left: 1015px;
 }
 
@@ -237,7 +238,7 @@ footer {
   margin-bottom: 60px;
 }
 .waypoint_output {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 80px;
 }
 .waypoint_div {
