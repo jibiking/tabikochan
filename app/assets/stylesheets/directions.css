@@ -12,6 +12,19 @@ body {
   background: url(tabikochan.png) no-repeat center/cover;
   overflow: hidden;
 }
+footer {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  background-color: #FFE3E1;
+}
+.footer_content {
+  margin: 2px;
+  color: #FF9494;
+  font-size: 10px;
+}
 
 /* ボタン */
 .cp_button01 {
