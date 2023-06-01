@@ -27,6 +27,25 @@
     left: 1015px;
   }
 
+  /* 個々のCSS */
+  .result_title {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 60px;
+  }
+  .waypoint_output {
+    font-size: 18px;
+    margin-bottom: 80px;
+  }
+  .waypoint_div {
+    margin-bottom: 60px;
+    border-bottom: 1px solid #FFD1D1;
+  }
+  .result_output {
+    font-size: 24px;
+    border-bottom: 2px solid #FF9494;
+  }
+
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,9 +56,9 @@
 <body>
   <div id="gmap"></div><!-- 地図を表示する領域 -->
   <div class="result_wrapper">
-    <h2>Result</h2>
-    <div id="waypoint_output"></div>
-    <div id="result_output"></div>
+    <h2 class="result_title">Result</h2>
+    <div id="waypoint_output" class="waypoint_output"></div>
+    <div id="result_output" class="result_output"></div>
   </div>
 
   <script>
@@ -108,7 +127,7 @@
             var routes = routeLetter + ': ' + waypoint_array[waypoint_count] + ' 〜 ' + routeLetter2 + ': ' + waypoint_array[waypoint_count + 1];
             waypoint_count++;
 
-            waypoints += routes + ", " + val.distance.text + ", " + val.duration.text + "<br>";
+            waypoints += "<div class='waypoint_div'>" + routes + " ☆ " + val.distance.text + " , " + val.duration.text + "</div>";
             const waypointElement = document.getElementById("waypoint_output");
             waypointElement.innerHTML = waypoints;
             });
