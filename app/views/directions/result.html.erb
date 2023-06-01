@@ -1,102 +1,94 @@
+<div id="gmap"></div><!-- 地図を表示する領域 -->
+<div class="result_wrapper">
+  <h2 class="result_title">Result</h2>
+  <div id="waypoint_output" class="waypoint_output"></div>
+  <div id="result_output" class="result_output"></div>
+</div>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300&display=swap" rel="stylesheet">
-</head>
+<script>
+  function initMap() {
+    // 地図を生成して表示
+    var map = new google.maps.Map(document.getElementById("gmap"), {
+      zoom: 13,
+      center: "<%= @start_location %>", // マップ中央をスタート地点に設定
+      mapTypeId: "roadmap"
+    });
 
-<body>
-  <div id="gmap"></div><!-- 地図を表示する領域 -->
-  <div class="result_wrapper">
-    <h2 class="result_title">Result</h2>
-    <div id="waypoint_output" class="waypoint_output"></div>
-    <div id="result_output" class="result_output"></div>
-  </div>
+    //DirectionsService のオブジェクトを生成
+    var directionsService = new google.maps.DirectionsService();
 
-  <script>
-    function initMap() {
-      // 地図を生成して表示
-      var map = new google.maps.Map(document.getElementById("gmap"), {
-        zoom: 13,
-        center: "<%= @start_location %>", // マップ中央をスタート地点に設定
-        mapTypeId: "roadmap"
-      });
+    //DirectionsRenderer のオブジェクトを生成
+    var directionsRenderer = new google.maps.DirectionsRenderer();
 
-      //DirectionsService のオブジェクトを生成
-      var directionsService = new google.maps.DirectionsService();
+    //directionsRenderer と地図を紐付け
+    directionsRenderer.setMap(map);
 
-      //DirectionsRenderer のオブジェクトを生成
-      var directionsRenderer = new google.maps.DirectionsRenderer();
+    // 経由地の配列を生成（最大8個）
+    var wayPoints = new Array();
+    var waypoint_string = '<%= raw @waypoint.to_json %>'
+    var waypoint_array = JSON.parse(waypoint_string);
 
-      //directionsRenderer と地図を紐付け
-      directionsRenderer.setMap(map);
-
-      // 経由地の配列を生成（最大8個）
-      var wayPoints = new Array();
-      var waypoint_string = '<%= raw @waypoint.to_json %>'
-      var waypoint_array = JSON.parse(waypoint_string);
-
-      waypoint_array.forEach(function(waypoint_element) {
-        wayPoints.push({location: waypoint_element});
-      });
+    waypoint_array.forEach(function(waypoint_element) {
+      wayPoints.push({location: waypoint_element});
+    });
 
 
-      // ルートを取得するリクエスト
-      var request = {
-        origin: "<%= @start_location %>",      // スタート地点
-        destination: "<%= @end_location %>",   // ゴール地点
-        avoidHighways: true, // 高速は利用しない
-        travelMode: google.maps.TravelMode.DRIVING, // 車モード
-    		optimizeWaypoints: true, // 最適化を有効
-		    waypoints: wayPoints // 経由地
-      };
+    // ルートを取得するリクエスト
+    var request = {
+      origin: "<%= @start_location %>",      // スタート地点
+      destination: "<%= @end_location %>",   // ゴール地点
+      avoidHighways: true, // 高速は利用しない
+      travelMode: google.maps.TravelMode.DRIVING, // 車モード
+      optimizeWaypoints: true, // 最適化を有効
+      waypoints: wayPoints // 経由地
+    };
 
-      //DirectionsService のオブジェクトのメソッド route() にリクエストを渡し、
-      //コールバック関数で結果を setDirections(result) で directionsRenderer にセットして表示
-      directionsService.route(request, function(result, status) {
-        //ステータスがOKの場合、
-        if (status === 'OK') {
-          directionsRenderer.setDirections(result); //取得したルート（結果：result）をセット
-          var legs = result.routes[0].legs;
+    //DirectionsService のオブジェクトのメソッド route() にリクエストを渡し、
+    //コールバック関数で結果を setDirections(result) で directionsRenderer にセットして表示
+    directionsService.route(request, function(result, status) {
+      //ステータスがOKの場合、
+      if (status === 'OK') {
+        directionsRenderer.setDirections(result); //取得したルート（結果：result）をセット
+        var legs = result.routes[0].legs;
 
-          var dis = 0;
-          var sec = 0;
-          var waypoints = '';
-          var waypoint_count = 0;
-          var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
+        var dis = 0;
+        var sec = 0;
+        var waypoints = '';
+        var waypoint_count = 0;
+        var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
 
-          // ルートの配列定義
-          waypoint_array.unshift("<%= @start_location %>");
-          waypoint_array.push("<%= @end_location %>");
+        // ルートの配列定義
+        waypoint_array.unshift("<%= @start_location %>");
+        waypoint_array.push("<%= @end_location %>");
 
-          // 経由地間の距離・時間を表示
-          legs.forEach(function(val) {
-            sec += val.duration.value;
-            dis += val.distance.value;
-            var routeLetter = String.fromCharCode(count_route); // 文字コードを文字列に変換
-            var routeLetter2 = String.fromCharCode(++count_route);
+        // 経由地間の距離・時間を表示
+        legs.forEach(function(val) {
+          sec += val.duration.value;
+          dis += val.distance.value;
+          var routeLetter = String.fromCharCode(count_route); // 文字コードを文字列に変換
+          var routeLetter2 = String.fromCharCode(++count_route);
 
-            var routes = routeLetter + ': ' + waypoint_array[waypoint_count] + ' 〜 ' + routeLetter2 + ': ' + waypoint_array[waypoint_count + 1];
-            waypoint_count++;
+          var routes = routeLetter + ': ' + waypoint_array[waypoint_count] + ' 〜 ' + routeLetter2 + ': ' + waypoint_array[waypoint_count + 1];
+          waypoint_count++;
 
-            waypoints += "<div class='waypoint_div'>" + routes + " ☆ " + val.distance.text + " , " + val.duration.text + "</div>";
-            const waypointElement = document.getElementById("waypoint_output");
-            waypointElement.innerHTML = waypoints;
-            });
+          waypoints += "<div class='waypoint_div'>" + routes + " ☆ " + val.distance.text + " , " + val.duration.text + "</div>";
+          const waypointElement = document.getElementById("waypoint_output");
+          waypointElement.innerHTML = waypoints;
+          });
 
-          // 時間・距離計算
-          var distanceInKm = (dis / 1000).toFixed(1);
-          var minutes = sec / 60;
-          var hours = Math.floor(minutes / 60);
-          minutes = Math.round(minutes % 60);
+        // 時間・距離計算
+        var distanceInKm = (dis / 1000).toFixed(1);
+        var minutes = sec / 60;
+        var hours = Math.floor(minutes / 60);
+        minutes = Math.round(minutes % 60);
 
-          result = "距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分";
-          const outputElement = document.getElementById("result_output");
-          outputElement.textContent = result;
-        }else{
-          alert("取得できませんでした：" + status);
-        }
-      });
-    }
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiHipELuIh7hSMRxi92Fngg7DkJN2jf4s&callback=initMap" async defer></script>
-</body>
+        result = "距離：" + distanceInKm + "km, 時間：" + hours + "時間" + minutes + "分";
+        const outputElement = document.getElementById("result_output");
+        outputElement.textContent = result;
+      }else{
+        alert("取得できませんでした：" + status);
+      }
+    });
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiHipELuIh7hSMRxi92Fngg7DkJN2jf4s&callback=initMap" async defer></script>
