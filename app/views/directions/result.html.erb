@@ -3,6 +3,7 @@
   <h2 class="result_title">Result</h2>
   <div id="waypoint_output" class="waypoint_output"></div>
   <div id="result_output" class="result_output"></div>
+  <div id="test"></div>
   <div class="button_wrapper">
     <%= link_to "再検索", "/", class: "cp_button01" %>
   </div>
@@ -79,6 +80,44 @@
           waypointElement.innerHTML = waypoints;
           });
 
+
+        // waypoint出力
+        var placeIds = [];
+        var placeNames = [];
+
+        result.geocoded_waypoints.forEach(function(geocoded_waypoint) {
+          placeIds.push(geocoded_waypoint.place_id);
+        });
+
+        const service = new google.maps.places.PlacesService(map);
+        var placePromises = placeIds.map(function(placeId) {
+          return new Promise(function(resolve, reject) {
+            const placeRequest = {
+              placeId: placeId,
+              fields: ["name", "formatted_address", "place_id", "geometry"],
+            };
+            service.getDetails(placeRequest, (place, status) => {
+              if (status === google.maps.places.PlacesServiceStatus.OK) {
+                resolve(place.name);
+              } else {
+                reject(status);
+              }
+            });
+          });
+        });
+
+        Promise.all(placePromises)
+          .then(function(names) {
+            placeNames = names;
+            console.log(placeNames);
+            const testElement = document.getElementById("test");
+            testElement.innerHTML = placeNames;
+          })
+          .catch(function(error) {
+            console.log("エラーが発生しました:", error);
+          });
+
+
         // 時間・距離計算
         var distanceInKm = (dis / 1000).toFixed(1);
         var minutes = sec / 60;
@@ -94,4 +133,4 @@
     });
   }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiHipELuIh7hSMRxi92Fngg7DkJN2jf4s&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiHipELuIh7hSMRxi92Fngg7DkJN2jf4s&callback=initMap&libraries=places&v=weekly" async defer></script>
