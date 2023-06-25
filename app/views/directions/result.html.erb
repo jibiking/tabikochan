@@ -3,7 +3,6 @@
   <h2 class="result_title">Result</h2>
   <div id="waypoint_output" class="waypoint_output"></div>
   <div id="result_output" class="result_output"></div>
-  <div id="test"></div>
   <div class="button_wrapper">
     <%= link_to "再検索", "/", class: "cp_button01" %>
   </div>
@@ -54,33 +53,24 @@
       if (status === 'OK') {
         directionsRenderer.setDirections(result); //取得したルート（結果：result）をセット
         var legs = result.routes[0].legs;
-
         var dis = 0;
         var sec = 0;
         var waypoints = '';
-        var waypoint_count = 0;
-        var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
-
-        // ルートの配列定義
-        waypoint_array.unshift("<%= @start_location %>");
-        waypoint_array.push("<%= @end_location %>");
+        var waypointIndex = 0;
 
         // 経由地間の距離・時間を表示
         legs.forEach(function(val) {
           sec += val.duration.value;
           dis += val.distance.value;
-          var routeLetter = String.fromCharCode(count_route); // 文字コードを文字列に変換
-          var routeLetter2 = String.fromCharCode(++count_route);
 
-          var routes = routeLetter + ': ' + waypoint_array[waypoint_count] + ' 〜 ' + routeLetter2 + ': ' + waypoint_array[waypoint_count + 1];
-          waypoint_count++;
-
-          waypoints += "<div class='waypoint_div'>" + routes + " ☆ " + val.distance.text + " , " + val.duration.text + "</div>";
+          waypoints += "<div class='waypoint_div' id='waypoint_div" + waypointIndex + "'>" + " ☆ " + val.distance.text + " , " + val.duration.text + "</div>";
           const waypointElement = document.getElementById("waypoint_output");
           waypointElement.innerHTML = waypoints;
+          waypointIndex++;
           });
 
 
+// TODO：適切位置に配置
         // waypoint出力
         var placeIds = [];
         var placeNames = [];
@@ -110,8 +100,13 @@
           .then(function(names) {
             placeNames = names;
             console.log(placeNames);
-            const testElement = document.getElementById("test");
-            testElement.innerHTML = placeNames;
+            waypointIndex = 0;
+            placeNames.forEach(function(placeName) {
+              const testElement = document.getElementById("waypoint_div"+waypointIndex);
+              testElement.innerHTML = placeNames[waypointIndex] + testElement.innerHTML;
+              waypointIndex++;
+            });
+
           })
           .catch(function(error) {
             console.log("エラーが発生しました:", error);
