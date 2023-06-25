@@ -100,10 +100,15 @@
           .then(function(names) {
             placeNames = names;
             console.log(placeNames);
-            waypointIndex = 0;
+            var waypointIndex = 0;
+            var count_route = 'A'.charCodeAt(0); // 'A' の文字コードを取得
+
             placeNames.forEach(function(placeName) {
+              var routeLetter = String.fromCharCode(count_route); // 文字コードを文字列に変換
+              var routeLetter2 = String.fromCharCode(++count_route);
+
               const testElement = document.getElementById("waypoint_div"+waypointIndex);
-              testElement.innerHTML = placeNames[waypointIndex] + testElement.innerHTML;
+              testElement.innerHTML = routeLetter + ':' + placeNames[waypointIndex] + ' ~ ' + routeLetter2 + ':' + placeNames[waypointIndex+1] + testElement.innerHTML;
               waypointIndex++;
             });
 
