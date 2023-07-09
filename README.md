@@ -2,4 +2,8 @@
 Tabikochanはルート最適化アプリです。
 与えられた地点をもとに最適なルートを提案し、あなたの旅をサポートします。
 
-[![Image from Gyazo](https://i.gyazo.com/5351758c791de67dbc835430f97699e3.gif)](https://gyazo.com/5351758c791de67dbc835430f97699e3)
+
+
+
+https://github.com/jibiking/tabikochan/assets/73700567/611ec3c1-a76f-4eb5-882f-b4a1304c7039
+
