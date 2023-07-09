@@ -29,11 +29,21 @@
           <label>経由地</label>
           <span class="focus_line"></span>
         </div>
+        <div class="cp_iptxt">
+          <%= form.text_field :waypoint2, id: "waypoint2", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
+          <label>経由地</label>
+          <span class="focus_line"></span>
+        </div>
+        <div class="cp_iptxt">
+          <%= form.text_field :waypoint3, id: "waypoint3", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
+          <label>経由地</label>
+          <span class="focus_line"></span>
+        </div>
     </div>
 
     <div class="button_wrapper">
-      <button type="button" onclick="addWaypoint()">経由地を追加</button>
-      <button type="button" onclick="removeWaypoint()">経由地を削除</button>
+      <button type="button" class="cp_button02" onclick="addWaypoint()">経由地<br>追加</button>
+      <button type="button" class="cp_button02 m-l25" onclick="removeWaypoint()">経由地<br>削除</button><br>
       <%= button_tag "検索", type: "submit", class: "cp_button01" %>
     </div>
   <% end %>
@@ -138,8 +148,10 @@
 
 
   // 経由地制御
-  let waypointCount = 1;
-  const maxWaypoints = 5;
+  // 経由地は最大８つまで可能
+  // 現在はデフォルト表示３つ、最大４つまで
+  let waypointCount = 3;
+  const maxWaypoints = 4;
 
   function addWaypoint() {
     if (waypointCount < maxWaypoints) {
@@ -168,17 +180,17 @@
 
       document.getElementById('waypoints-container').appendChild(waypointContainer);
     } else {
-      alert("You can't add more than 5 waypoints.");
+      alert("経由地は最大で4つまでです。");
     }
   }
 
   function removeWaypoint() {
-      if (waypointCount > 1) {
+      if (waypointCount > 0) {
           const waypointToRemove = document.getElementById(`waypoint${waypointCount}`).parentNode;
           waypointToRemove.parentNode.removeChild(waypointToRemove);
           waypointCount--;
       } else {
-          alert("You must have at least one waypoint.");
+          // alert("警告文入れる場合はここに");
       }
   }
 </script>
