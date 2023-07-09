@@ -23,120 +23,162 @@
       <span class="focus_line"></span>
     </div>
 
-    <div class="cp_iptxt">
-      <%= form.text_field :waypoint1, id: "waypoint1", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
-      <label>経由地</label>
-      <span class="focus_line"></span>
-    </div>
-    <div class="cp_iptxt">
-      <%= form.text_field :waypoint2, id: "waypoint2", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
-      <label>経由地</label>
-      <span class="focus_line"></span>
-    </div>
-    <div class="cp_iptxt">
-      <%= form.text_field :waypoint3, id: "waypoint3", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
-      <label>経由地</label>
-      <span class="focus_line"></span>
+    <div id="waypoints-container">
+        <div class="cp_iptxt">
+          <%= form.text_field :waypoint1, id: "waypoint1", class: "ef", type: "text", placeholder: "", autocomplete: 'off' %>
+          <label>経由地</label>
+          <span class="focus_line"></span>
+        </div>
     </div>
 
     <div class="button_wrapper">
+      <button type="button" onclick="addWaypoint()">経由地を追加</button>
+      <button type="button" onclick="removeWaypoint()">経由地を削除</button>
       <%= button_tag "検索", type: "submit", class: "cp_button01" %>
     </div>
   <% end %>
 </div>
 
 <script>
-var Canvas = document.getElementById('canvas');
-var ctx = Canvas.getContext('2d');
+  // タイトル背景
+  var Canvas = document.getElementById('canvas');
+  var ctx = Canvas.getContext('2d');
 
-var resize = function() {
-    Canvas.width = Canvas.clientWidth;
-    Canvas.height = Canvas.clientHeight;
-};
-window.addEventListener('resize', resize);
-resize();
+  var resize = function() {
+      Canvas.width = Canvas.clientWidth;
+      Canvas.height = Canvas.clientHeight;
+  };
+  window.addEventListener('resize', resize);
+  resize();
 
-var elements = [];
-var presets = {};
+  var elements = [];
+  var presets = {};
 
-presets.o = function (x, y, s, dx, dy) {
-    return {
-        x: x,
-        y: y,
-        r: 12 * s,
-        w: 5 * s,
-        dx: dx,
-        dy: dy,
-        draw: function(ctx, t) {
-            this.x += this.dx;
-            this.y += this.dy;
-            
-            ctx.beginPath();
-            ctx.arc(this.x + + Math.sin((50 + x + (t / 10)) / 100) * 3, this.y + + Math.sin((45 + x + (t / 10)) / 100) * 4, this.r, 0, 2 * Math.PI, false);
-            ctx.lineWidth = this.w;
-            ctx.strokeStyle = '#FFD1D1';
-            ctx.stroke();
-        }
+  presets.o = function (x, y, s, dx, dy) {
+      return {
+          x: x,
+          y: y,
+          r: 12 * s,
+          w: 5 * s,
+          dx: dx,
+          dy: dy,
+          draw: function(ctx, t) {
+              this.x += this.dx;
+              this.y += this.dy;
+
+              ctx.beginPath();
+              ctx.arc(this.x + + Math.sin((50 + x + (t / 10)) / 100) * 3, this.y + + Math.sin((45 + x + (t / 10)) / 100) * 4, this.r, 0, 2 * Math.PI, false);
+              ctx.lineWidth = this.w;
+              ctx.strokeStyle = '#FFD1D1';
+              ctx.stroke();
+          }
+      }
+  };
+
+  presets.x = function (x, y, s, dx, dy, dr, r) {
+      r = r || 0;
+      return {
+          x: x,
+          y: y,
+          s: 20 * s,
+          w: 5 * s,
+          r: r,
+          dx: dx,
+          dy: dy,
+          dr: dr,
+          draw: function(ctx, t) {
+              this.x += this.dx;
+              this.y += this.dy;
+              this.r += this.dr;
+
+              var _this = this;
+              var line = function(x, y, tx, ty, c, o) {
+                  o = o || 0;
+                  ctx.beginPath();
+                  ctx.moveTo(-o + ((_this.s / 2) * x), o + ((_this.s / 2) * y));
+                  ctx.lineTo(-o + ((_this.s / 2) * tx), o + ((_this.s / 2) * ty));
+                  ctx.lineWidth = _this.w;
+                  ctx.strokeStyle = c;
+                  ctx.stroke();
+              };
+
+              ctx.save();
+
+              ctx.translate(this.x + Math.sin((x + (t / 10)) / 100) * 5, this.y + Math.sin((10 + x + (t / 10)) / 100) * 2);
+              ctx.rotate(this.r * Math.PI / 180);
+
+              line(-1, -1, 1, 1, '#FFD1D1');
+              line(1, -1, -1, 1, '#FFD1D1');
+
+              ctx.restore();
+          }
+      }
+  };
+
+  for(var x = 0; x < Canvas.width; x++) {
+      for(var y = 0; y < Canvas.height; y++) {
+          if(Math.round(Math.random() * 8000) == 1) {
+              var s = ((Math.random() * 5) + 1) / 10;
+              if(Math.round(Math.random()) == 1)
+                  elements.push(presets.o(x, y, s, 0, 0));
+              else
+                  elements.push(presets.x(x, y, s, 0, 0, ((Math.random() * 3) - 1) / 10, (Math.random() * 360)));
+          }
+      }
+  }
+
+  setInterval(function() {
+      ctx.clearRect(0, 0, Canvas.width, Canvas.height);
+
+      var time = new Date().getTime();
+      for (var e in elements)
+      elements[e].draw(ctx, time);
+  }, 10);
+  // タイトル背景↑
+
+
+  // 経由地制御
+  let waypointCount = 1;
+  const maxWaypoints = 5;
+
+  function addWaypoint() {
+    if (waypointCount < maxWaypoints) {
+      waypointCount++;
+
+      const waypointContainer = document.createElement('div');
+      waypointContainer.className = "cp_iptxt";
+
+      const waypointInput = document.createElement('input');
+      waypointInput.type = "text";
+      waypointInput.id = `waypoint${waypointCount}`;
+      waypointInput.className = "ef";
+      waypointInput.setAttribute('placeholder', "");
+      waypointInput.setAttribute('autocomplete', 'off');
+              waypointInput.name = `waypoint${waypointCount}`;
+
+      const waypointLabel = document.createElement('label');
+      waypointLabel.textContent = "経由地";
+
+      const focusLine = document.createElement('span');
+      focusLine.className = "focus_line";
+
+      waypointContainer.appendChild(waypointInput);
+      waypointContainer.appendChild(waypointLabel);
+      waypointContainer.appendChild(focusLine);
+
+      document.getElementById('waypoints-container').appendChild(waypointContainer);
+    } else {
+      alert("You can't add more than 5 waypoints.");
     }
-};
+  }
 
-presets.x = function (x, y, s, dx, dy, dr, r) {
-    r = r || 0;
-    return {
-        x: x,
-        y: y,
-        s: 20 * s,
-        w: 5 * s,
-        r: r,
-        dx: dx,
-        dy: dy,
-        dr: dr,
-        draw: function(ctx, t) {
-            this.x += this.dx;
-            this.y += this.dy;
-            this.r += this.dr;
-            
-            var _this = this;
-            var line = function(x, y, tx, ty, c, o) {
-                o = o || 0;
-                ctx.beginPath();
-                ctx.moveTo(-o + ((_this.s / 2) * x), o + ((_this.s / 2) * y));
-                ctx.lineTo(-o + ((_this.s / 2) * tx), o + ((_this.s / 2) * ty));
-                ctx.lineWidth = _this.w;
-                ctx.strokeStyle = c;
-                ctx.stroke();
-            };
-            
-            ctx.save();
-            
-            ctx.translate(this.x + Math.sin((x + (t / 10)) / 100) * 5, this.y + Math.sin((10 + x + (t / 10)) / 100) * 2);
-            ctx.rotate(this.r * Math.PI / 180);
-            
-            line(-1, -1, 1, 1, '#FFD1D1');
-            line(1, -1, -1, 1, '#FFD1D1');
-            
-            ctx.restore();
-        }
-    }
-};
-
-for(var x = 0; x < Canvas.width; x++) {
-    for(var y = 0; y < Canvas.height; y++) {
-        if(Math.round(Math.random() * 8000) == 1) {
-            var s = ((Math.random() * 5) + 1) / 10;
-            if(Math.round(Math.random()) == 1)
-                elements.push(presets.o(x, y, s, 0, 0));
-            else
-                elements.push(presets.x(x, y, s, 0, 0, ((Math.random() * 3) - 1) / 10, (Math.random() * 360)));
-        }
-    }
-}
-
-setInterval(function() {
-    ctx.clearRect(0, 0, Canvas.width, Canvas.height);
-
-    var time = new Date().getTime();
-    for (var e in elements)
-    elements[e].draw(ctx, time);
-}, 10);
+  function removeWaypoint() {
+      if (waypointCount > 1) {
+          const waypointToRemove = document.getElementById(`waypoint${waypointCount}`).parentNode;
+          waypointToRemove.parentNode.removeChild(waypointToRemove);
+          waypointCount--;
+      } else {
+          alert("You must have at least one waypoint.");
+      }
+  }
 </script>
